@@ -7,13 +7,14 @@
     using PersistentWeaponFlashlight.Memory;
 
 
-    internal static class EntryPoint
+    internal static unsafe class EntryPoint
     {
-        private static bool TurnFlashlightOn;
+        private static bool turnFlashlightOn;
+        
+        private const uint COMPONENT_FLASHLIGHT_LIGHT = 0xDDB7390F;
+        private static CWeaponComponentFlashLightInfo* componentFlashLightLightInfo;
 
-        private const uint FlashlightWeaponNameHash = 2343591895;
-
-        private static unsafe void Main()
+        private static void Main()
         {
             while (Game.IsLoading)
                 GameFiber.Sleep(1000);
@@ -50,17 +51,25 @@
                 if (weaponComponentFlashLight == null)
                     continue;
 
-                if (weaponManager->CurrentWeaponNameHash == FlashlightWeaponNameHash) // disable WEAPON_FLASHLIGHT, it makes a weird sound when not aiming
-                    continue;
-
                 if (Game.IsControlJustPressed(0, GameControl.WeaponSpecialTwo))
                 {
-                    TurnFlashlightOn = !TurnFlashlightOn;
+                    turnFlashlightOn = !turnFlashlightOn;
                 }
 
-                if (TurnFlashlightOn)
+                if (turnFlashlightOn)
                 {
                     weaponComponentFlashLight->State |= CWeaponComponentFlashLightState.On;
+
+                    if (weaponComponentFlashLight->WeaponComponentFlashLightInfo->Name == COMPONENT_FLASHLIGHT_LIGHT)
+                    {
+                        // set ToggleWhenAiming of the COMPONENT_FLASHLIGHT_LIGHT to false, otherwise plays the toggle sound in a loop when not aiming
+                        if (weaponComponentFlashLight->WeaponComponentFlashLightInfo->ToggleWhenAiming == 1)
+                        {
+                            weaponComponentFlashLight->WeaponComponentFlashLightInfo->ToggleWhenAiming = 0;
+
+                            componentFlashLightLightInfo = weaponComponentFlashLight->WeaponComponentFlashLightInfo;
+                        }
+                    }
 
                     if (*(float*)(new IntPtr(weaponComponentFlashLight) + 0x40) == 0.0f)
                     {
@@ -77,7 +86,11 @@
 
         private static void OnUnload(bool isTerminating)
         {
-
+            if(componentFlashLightLightInfo != null)
+            {
+                // reset ToggleWhenAiming of the COMPONENT_FLASHLIGHT_LIGHT
+                componentFlashLightLightInfo->ToggleWhenAiming = 1;
+            }
         }
     }
 }
