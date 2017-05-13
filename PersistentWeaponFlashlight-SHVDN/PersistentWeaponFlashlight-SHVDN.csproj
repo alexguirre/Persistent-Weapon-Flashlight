@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EF0339FC-04B8-4E7A-AADF-5E692FD0081A}</ProjectGuid>
+    <ProjectGuid>{9E8A9BB4-E4F5-4D3C-A176-B42978BBFCE0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PersistentWeaponFlashlight</RootNamespace>
@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ScriptHookVDotNet">
-      <HintPath>..\..\Dependencies\ScriptHookVDotNet.dll</HintPath>
+      <HintPath>..\Dependencies\ScriptHookVDotNet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,8 +49,7 @@
     <Compile Include="Memory\CPedWeaponManager.cs" />
     <Compile Include="Memory\CWeapon.cs" />
     <Compile Include="Memory\CWeaponComponentFlashLight.cs" />
-    <Compile Include="Memory\CWeaponComponentFlashLightInfo.cs" />
-    <Compile Include="Memory\CWeaponComponentFlashLightState.cs" />
+    <Compile Include="Memory\Nopper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

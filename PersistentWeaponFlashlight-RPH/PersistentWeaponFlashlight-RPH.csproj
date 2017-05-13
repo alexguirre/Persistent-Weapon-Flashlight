@@ -72,6 +72,7 @@
     <Compile Include="Memory\CPedWeaponManager.cs" />
     <Compile Include="Memory\CWeapon.cs" />
     <Compile Include="Memory\CWeaponComponentFlashLight.cs" />
+    <Compile Include="Memory\Nopper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

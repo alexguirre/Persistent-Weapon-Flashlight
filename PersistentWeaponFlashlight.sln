@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistentWeaponFlashlight", "PersistentWeaponFlashlight\PersistentWeaponFlashlight.csproj", "{EF0339FC-04B8-4E7A-AADF-5E692FD0081A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistentWeaponFlashlight-RPH", "PersistentWeaponFlashlight-RPH\PersistentWeaponFlashlight-RPH.csproj", "{EF0339FC-04B8-4E7A-AADF-5E692FD0081A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistentWeaponFlashlight-SHVDN", "PersistentWeaponFlashlight-SHVDN\PersistentWeaponFlashlight-SHVDN.csproj", "{9E8A9BB4-E4F5-4D3C-A176-B42978BBFCE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,12 @@ Global
 		{EF0339FC-04B8-4E7A-AADF-5E692FD0081A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF0339FC-04B8-4E7A-AADF-5E692FD0081A}.Release|x64.ActiveCfg = Release|x64
 		{EF0339FC-04B8-4E7A-AADF-5E692FD0081A}.Release|x64.Build.0 = Release|x64
+		{9E8A9BB4-E4F5-4D3C-A176-B42978BBFCE0}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{9E8A9BB4-E4F5-4D3C-A176-B42978BBFCE0}.Debug|x64.ActiveCfg = Debug|x64
+		{9E8A9BB4-E4F5-4D3C-A176-B42978BBFCE0}.Debug|x64.Build.0 = Debug|x64
+		{9E8A9BB4-E4F5-4D3C-A176-B42978BBFCE0}.Release|Any CPU.ActiveCfg = Release|x64
+		{9E8A9BB4-E4F5-4D3C-A176-B42978BBFCE0}.Release|x64.ActiveCfg = Release|x64
+		{9E8A9BB4-E4F5-4D3C-A176-B42978BBFCE0}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

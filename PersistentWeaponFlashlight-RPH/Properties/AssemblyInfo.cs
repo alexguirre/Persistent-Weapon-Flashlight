@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using Rage.Attributes;
 
 [assembly: AssemblyTitle("Persistent Weapon Flashlight")]
-[assembly: AssemblyDescription("SHV.NET version")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Persistent Weapon Flashlight")]
@@ -11,5 +12,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("ef0339fc-04b8-4e7a-aadf-5e692fd0081a")]
-[assembly: AssemblyVersion("1.1.0.*")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.2.0.*")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: Plugin("Persistent Weapon Flashlight", Author = "alexguirre", Description = "Makes the flashlight on your weapon stay on when you're not aiming.", PrefersSingleInstance = true)]
