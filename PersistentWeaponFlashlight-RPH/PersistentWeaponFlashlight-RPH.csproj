@@ -67,11 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="Memory\CObject.cs" />
-    <Compile Include="Memory\CPed.cs" />
-    <Compile Include="Memory\CPedWeaponManager.cs" />
-    <Compile Include="Memory\CWeapon.cs" />
-    <Compile Include="Memory\CWeaponComponentFlashLight.cs" />
+    <Compile Include="Memory\MemoryFunctions.cs" />
     <Compile Include="Memory\Nopper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

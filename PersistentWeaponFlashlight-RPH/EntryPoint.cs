@@ -1,5 +1,6 @@
 ﻿namespace PersistentWeaponFlashlight
 {
+    using System;
     using System.Runtime.InteropServices;
 
     using Rage;
@@ -11,7 +12,7 @@
         const string UpdateWeaponComponentFlashlightFunctionPattern = "48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 7C 24 ?? 41 54 41 56 41 57 48 83 EC 40 48 8B FA 48 8B D9 48 85 D2 0F 84 ?? ?? ?? ?? 80 7A 28 04 0F 85 ?? ?? ?? ??";
         const string ToggleWeaponFlashlightFunctionPattern = "48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 41 56 41 57 48 83 EC 20 8A 41 49 48 8B FA 48 8B 51 10 44 8A C0 24 FE 4C 8B F9 41 F6 D0 41 80 E0 01 44 0A C0 41 80 C8 02 44 88 41 49 48 8D 0D ?? ?? ?? ??";
 
-        delegate void ToggleWeaponFlashlightDelegate(CWeaponComponentFlashLight* compFlashlight, CPed* ped, long unk_0);
+        delegate void ToggleWeaponFlashlightDelegate(long compFlashlight, IntPtr ped, long unk_0);
 
         /// <summary>
         /// Nops the instruction that turns off the flashlight when not aiming.
@@ -52,33 +53,32 @@
                 if (!playerPed)
                     continue;
 
-                CPed* playerPedPtr = (CPed*)playerPed.MemoryAddress;
+                IntPtr playerPedPtr = playerPed.MemoryAddress;
 
+                long weaponManager = MemoryFunctions.GetPedWeaponManager(playerPedPtr);
 
-                CPedWeaponManager* weaponManager = playerPedPtr->WeaponManager;
-
-                if (weaponManager == null)
+                if (weaponManager == 0)
                     continue;
 
-                CObject* currentWeaponObject = weaponManager->CurrentWeaponObject;
+                long currentWeaponObject = MemoryFunctions.GetWeaponManagerCurrentWeaponObject(weaponManager);
 
-                if (currentWeaponObject == null)
+                if (currentWeaponObject == 0)
                     continue;
 
-                CWeapon* weapon = currentWeaponObject->Weapon;
+                long weapon = MemoryFunctions.GetObjectWeapon(currentWeaponObject);
 
-                if (weapon == null)
+                if (weapon == 0)
                     continue;
 
-                CWeaponComponentFlashLight* weaponComponentFlashLight = weapon->WeaponComponentFlashLight;
+                long weaponComponentFlashLight = MemoryFunctions.GetWeaponComponentFlashlight(weapon);
 
-                if (weaponComponentFlashLight == null)
+                if (weaponComponentFlashLight == 0)
                     continue;
 
-                if (Game.IsControlJustPressed(0, GameControl.WeaponSpecialTwo) || lastOn != weaponComponentFlashLight->IsOn)
+                if (Game.IsControlJustPressed(0, GameControl.WeaponSpecialTwo) || lastOn != MemoryFunctions.GetComponentFlashlightIsOn(weaponComponentFlashLight))
                 {
                     toggleWeaponFlashlight(weaponComponentFlashLight, playerPedPtr, 0);
-                    lastOn = weaponComponentFlashLight->IsOn;
+                    lastOn = MemoryFunctions.GetComponentFlashlightIsOn(weaponComponentFlashLight);
                 }
             }
         }
