@@ -3,11 +3,19 @@
     using System;
     using System.Runtime.InteropServices;
 
+#if RPH
     using Rage;
+#elif SHVDN
+    using GTA;
+#endif
 
     using PersistentWeaponFlashlight.Memory;
 
+#if RPH
     internal static unsafe class EntryPoint
+#elif SHVDN
+    internal unsafe class PersistantWeaponFlashlight : Script
+#endif
     {
         delegate void ToggleWeaponFlashlightDelegate(long compFlashlight, IntPtr ped, long unk_0);
 
@@ -30,57 +38,81 @@
 
         static readonly ToggleWeaponFlashlightDelegate toggleWeaponFlashlight = Marshal.GetDelegateForFunctionPointer<ToggleWeaponFlashlightDelegate>(MemoryFunctions.ToggleWeaponFlashlightFunctionAddr);
 
+#if RPH
         private static void Main()
         {
             while (Game.IsLoading)
                 GameFiber.Sleep(1000);
 
-            nopper1.Nop();
-            nopper2.Nop();
-            nopper3.Nop();
-            nopper4.Nop();
+            PluginInit();
 
-            bool lastOn = false;
             while (true)
             {
                 GameFiber.Yield();
 
-                Ped playerPed = Game.LocalPlayer.Character;
-
-                if (!playerPed)
-                    continue;
-
-                IntPtr playerPedPtr = playerPed.MemoryAddress;
-
-                long weaponManager = MemoryFunctions.GetPedWeaponManager(playerPedPtr);
-
-                if (weaponManager == 0)
-                    continue;
-
-                long currentWeaponObject = MemoryFunctions.GetWeaponManagerCurrentWeaponObject(weaponManager);
-
-                if (currentWeaponObject == 0)
-                    continue;
-
-                long weapon = MemoryFunctions.GetObjectWeapon(currentWeaponObject);
-
-                if (weapon == 0)
-                    continue;
-
-                long weaponComponentFlashLight = MemoryFunctions.GetWeaponComponentFlashlight(weapon);
-
-                if (weaponComponentFlashLight == 0)
-                    continue;
-
-                if (Game.IsControlJustPressed(0, GameControl.WeaponSpecialTwo) || lastOn != MemoryFunctions.GetComponentFlashlightIsOn(weaponComponentFlashLight))
-                {
-                    toggleWeaponFlashlight(weaponComponentFlashLight, playerPedPtr, 0);
-                    lastOn = MemoryFunctions.GetComponentFlashlightIsOn(weaponComponentFlashLight);
-                }
+                PluginUpdate();
             }
         }
 
-        private static void OnUnload(bool isTerminating)
+        private static void OnUnload(bool isTerminating) => PluginShutdown();
+#elif SHVDN
+        public PersistantWeaponFlashlight()
+        {
+            Tick += OnTick;
+            Aborted += OnAborted;
+
+            PluginInit();
+        }
+        
+        private static void OnTick(object sender, EventArgs e) => PluginUpdate();
+        private static void OnAborted(object sender, EventArgs e) => PluginShutdown();
+#endif
+
+        private static void PluginInit()
+        {
+            nopper1.Nop();
+            nopper2.Nop();
+            nopper3.Nop();
+            nopper4.Nop();
+        }
+
+        private static bool lastOn = false;
+        private static void PluginUpdate()
+        {
+
+            IntPtr playerPedPtr = Util.GetPlayerPedAddress();
+
+            if (playerPedPtr == IntPtr.Zero)
+                return;
+
+            long weaponManager = MemoryFunctions.GetPedWeaponManager(playerPedPtr);
+
+            if (weaponManager == 0)
+                return;
+
+            long currentWeaponObject = MemoryFunctions.GetWeaponManagerCurrentWeaponObject(weaponManager);
+
+            if (currentWeaponObject == 0)
+                return;
+
+            long weapon = MemoryFunctions.GetObjectWeapon(currentWeaponObject);
+
+            if (weapon == 0)
+                return;
+
+            long weaponComponentFlashLight = MemoryFunctions.GetWeaponComponentFlashlight(weapon);
+
+            if (weaponComponentFlashLight == 0)
+                return;
+
+            if (Util.IsWeaponSpecialTwoJustPressed() || lastOn != MemoryFunctions.GetComponentFlashlightIsOn(weaponComponentFlashLight))
+            {
+                toggleWeaponFlashlight(weaponComponentFlashLight, playerPedPtr, 0);
+                lastOn = MemoryFunctions.GetComponentFlashlightIsOn(weaponComponentFlashLight);
+            }
+        }
+
+        private static void PluginShutdown()
         {
             if (nopper1.IsNopped)
                 nopper1.Restore();
