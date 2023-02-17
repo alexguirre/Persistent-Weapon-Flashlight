@@ -22,6 +22,7 @@
         static MemoryFunctions()
         {
             IntPtr weaponComponentFlashlightOffsetAddr = FindPattern("48 89 BB ?? ?? ?? ?? EB 16 48 89 BB");
+            IntPtr objectWeaponOffsetAddr = FindPattern("48 89 BB ?? ?? ?? ?? 48 85 FF 74 18 B8");
 
             bool error = false;
             if (UpdateWeaponComponentFlashlightFunctionAddr == IntPtr.Zero)
@@ -42,6 +43,12 @@
                 error = true;
             }
 
+            if (objectWeaponOffsetAddr == IntPtr.Zero)
+            {
+                Util.Log($"ERROR: could not find {nameof(objectWeaponOffsetAddr)}");
+                error = true;
+            }
+
             if (error)
             {
                 Util.Log("Unloading...");
@@ -50,7 +57,7 @@
             }
 
             CWeaponManager_CurrentWeaponObjectOffset = 0x0078;
-            CObject_WeaponOffset = 0x0340;
+            CObject_WeaponOffset = *(int*)(objectWeaponOffsetAddr + 3);
             CWeaponComponentFlashLight_StateOffset = 0x0049;
 
             CPed_WeaponManagerOffset = *(int*)(ToggleWeaponFlashlightFunctionAddr + 0x68);
